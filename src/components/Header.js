@@ -114,7 +114,7 @@ class MiniDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-              Mini variant drawer
+              Customer Dashboard
             </Typography>
           </Toolbar>
         </AppBar>
@@ -137,7 +137,7 @@ class MiniDrawer extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
+          <Typography noWrap>{'Content area here'}</Typography>
         </main>
       </div>
     );
