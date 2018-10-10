@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Header from './components/Header';
+import Layout from './components/Layout';
 
 class App extends Component {
   render() {
     return (
-      <div style={{ height: '100vh' }}>
-        <Header />
+      <div style={{ height: '100vh', overflow: 'auto' }}>
+        <Layout />
       </div>
     );
   }
