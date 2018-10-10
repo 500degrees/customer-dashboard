@@ -9,21 +9,13 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Header from './Header';
-import TicketsContainer from './TicketsContainer';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 import LayoutStyles from './LayoutStyles';
-import {getTickets} from '../shared/tickets';
 
-class MiniDrawer extends React.Component {
+class Layout extends React.Component {
   state = {
     open: false,
-    tickets: [{ _id: 123 }]
   };
-
-  async componentDidMount() {
-    const tickets = await getTickets();
-    this.setState({ tickets });
-  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -34,11 +26,11 @@ class MiniDrawer extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, page, loading } = this.props;
 
     return (
       <div className={classes.root}>
-        <Header open={this.state.open} handleDrawerOpen={this.handleDrawerOpen} />
+        <Header open={this.state.open} handleDrawerOpen={this.handleDrawerOpen} loading={loading} />
         <Drawer
           variant="permanent"
           classes={{
@@ -58,16 +50,16 @@ class MiniDrawer extends React.Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <TicketsContainer tickets={this.state.tickets} />
+          {page}
         </main>
       </div>
     );
   }
 }
 
-MiniDrawer.propTypes = {
+Layout.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(LayoutStyles, { withTheme: true })(MiniDrawer);
+export default withStyles(LayoutStyles, { withTheme: true })(Layout);

@@ -17,30 +17,26 @@ const styles = {
     margin: '0 2px',
     transform: 'scale(0.8)',
   },
-  title: {
-    fontSize: 14,
-  },
   pos: {
     marginBottom: 12,
   },
 };
 
-function SimpleCard(props) {
-  const { classes, ticket } = props;
-
+function SimpleCard({ classes, ticket, cleanAccount, transferAccount, closeTicket }) {
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
+        <Typography color="textSecondary" gutterBottom variant="h6">
           <a href={`mailto:${ticket.email}`}>{ticket.email}</a>
         </Typography>
-        <Typography component='p' >
+        <Typography component='p' variant="subtitle1">
           {ticket.message}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Cleanup Account</Button>
-        <Button size="small">Transfer Account</Button>
+        <Button size="small" onClick={cleanAccount}>Cleanup Account</Button>
+        <Button size="small" onClick={transferAccount}>Transfer Account</Button>
+        <Button size="small" onClick={closeTicket}>Close Ticket</Button>
       </CardActions>
     </Card>
   );

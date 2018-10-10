@@ -1,4 +1,5 @@
 import React from 'react';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -27,26 +28,27 @@ const styles = theme => ({
   },
 });
 
-const Header = ({ classes, open, handleDrawerOpen }) => {
+const Header = ({ classes, open, handleDrawerOpen, loading }) => {
   return (
     <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, open && classes.appBarShift)}
+      position="absolute"
+      className={classNames(classes.appBar, open && classes.appBarShift)}
+    >
+      <Toolbar disableGutters={!open}>
+        <IconButton
+          color="inherit"
+          aria-label="Open drawer"
+          onClick={handleDrawerOpen}
+          className={classNames(classes.menuButton, open && classes.hide)}
         >
-          <Toolbar disableGutters={!open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={handleDrawerOpen}
-              className={classNames(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Customer Dashboard
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" color="inherit" noWrap>
+          Customer Dashboard
             </Typography>
-          </Toolbar>
-        </AppBar>
+      </Toolbar>
+      {loading ? <LinearProgress color="secondary" /> : null}
+    </AppBar>
   )
 }
 

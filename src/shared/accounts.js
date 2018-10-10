@@ -1,26 +1,26 @@
 import fetch from 'isomorphic-fetch';
 import { API } from './constants';
 
-export const getTickets = async (token) => {
+export const clean = async (token, email) => {
   const headers = new Headers();
   headers.append('Authorization', `JWT ${token}`);
   const fetchOptions = {
     headers,
-    method: 'GET'
+    method: 'POST'
   }
-  const response = await fetch(`${API}/api/support/tickets`, fetchOptions);
+  const response = await fetch(`${API}/api/transfer/clean/${email}`, fetchOptions);
   const data = await response.json();
-  return data ? data.filter(t => !t.resolved) : [];
+  return data;
 }
 
-export const closeTicket = async (token, ticketId) => {
+export const transfer = async (token, email) => {
   const headers = new Headers();
   headers.append('Authorization', `JWT ${token}`);
   const fetchOptions = {
     headers,
-    method: 'PUT'
+    method: 'POST'
   }
-  const response = await fetch(`${API}/api/support/tickets/resolve/${ticketId}`, fetchOptions);
+  const response = await fetch(`${API}/api/transfer/${email}`, fetchOptions);
   const data = await response.json();
   return data;
 }
