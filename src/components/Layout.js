@@ -11,7 +11,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Header from './Header';
 import TicketsContainer from './TicketsContainer';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
-import layoutStyles from './layoutStyles';
+import LayoutStyles from './LayoutStyles';
 import {getTickets} from '../shared/tickets';
 
 class MiniDrawer extends React.Component {
@@ -70,4 +70,4 @@ MiniDrawer.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(layoutStyles, { withTheme: true })(MiniDrawer);
+export default withStyles(LayoutStyles, { withTheme: true })(MiniDrawer);

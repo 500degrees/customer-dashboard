@@ -47,5 +47,6 @@ export default theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+    overflowY: 'auto',
   },
 });

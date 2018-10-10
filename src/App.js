@@ -4,7 +4,7 @@ import Layout from './components/Layout';
 class App extends Component {
   render() {
     return (
-      <div style={{ height: '100vh', overflow: 'auto' }}>
+      <div style={{ height: '100vh' }}>
         <Layout />
       </div>
     );
