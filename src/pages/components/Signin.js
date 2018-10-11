@@ -46,7 +46,7 @@ const styles = theme => ({
 });
 
 function SignIn(props) {
-  const { classes } = props;
+  const { classes, onSignIn } = props;
 
   return (
     <React.Fragment>
@@ -83,6 +83,7 @@ function SignIn(props) {
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={onSignIn}
             >
               Sign in
             </Button>

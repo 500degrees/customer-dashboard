@@ -19,11 +19,11 @@ export class App extends Component {
 
   render() {
     const page = this.state.signedIn ? 
-    <TicketsPage onLoadingUpdate={this.onLoadingUpdate} /> :
-    <LoginPage />
+    <Layout page={<TicketsPage onLoadingUpdate={this.onLoadingUpdate} />} loading={this.state.loading} /> :
+    <LoginPage onSignIn={this.siginIn} />
     return (
       <div style={{ height: '100vh' }}>
-        <Layout page={page} loading={this.state.loading} />
+        {page}
       </div>
     );
   }

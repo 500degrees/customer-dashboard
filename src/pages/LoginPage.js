@@ -1,8 +1,8 @@
 import React from 'react';
 import Signin from './components/Signin';
 
-export default () => {
+export default ({ onSignIn }) => {
   return (
-    <Signin />
+    <Signin onSignIn={onSignIn} />
   )
 }
