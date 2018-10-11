@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: __APP_NAME__
+  namespace: __CI_ENVIRONMENT_SLUG__
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: __CI_ENVIRONMENT_SLUG__.scoutlit.com
+    http:
+      paths:
+      - path: /customer-dashboard
+        backend:
+          serviceName: __APP_NAME__
+          servicePort: http

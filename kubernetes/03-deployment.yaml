@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __APP_NAME__
+  namespace: __CI_ENVIRONMENT_SLUG__
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: __APP_NAME__
+      tier: api
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: __APP_NAME__
+        tier: api
+        track: stable
+    spec:
+      containers:
+      - name: __APP_NAME__
+        image: us.gcr.io/scoutlit-1267/__IMAGE_NAME__:__IMAGE_TAG__
+        imagePullPolicy: Always
+        env:
+          - name: DUMMY
+            value: DUMMY
+        ports:
+        - name: __APP_NAME__
+          containerPort: __APP_PORT__

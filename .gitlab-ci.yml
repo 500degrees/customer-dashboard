@@ -1,0 +1,125 @@
+image: node:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay
+  APP_NAME: dashboard
+  SHORT_TAG: 'echo $$CI_COMMIT_SHA | cut -c1-8'
+  APP_PORT: 80
+  GCP_REGION: us-central1
+  GCP_PROJECT_ID: scoutlit-1267
+  CLUSTER_NAME: octopus
+  PKG_LIST: $(go list ./... | grep -v /vendor/)
+  REPO_NAME: gitlab.com/500degrees/basketball-tracker/static/customer-dashboard
+  K8S_FILES: "03-deployment.yaml 01-service.yaml 02-ingress.yaml"
+
+stages:
+  - test
+  - build
+  - publish
+  - staging
+  - production
+
+before_script:
+  - export IMAGE_TAG=$(eval $SHORT_TAG)
+  - echo $IMAGE_TAG
+
+
+
+unit_tests:
+  stage: test
+  script:
+    - echo "Add unit testing for react"
+  # artifacts:
+  #   paths:
+  #     - ./coverage.html
+  tags:
+    - docker
+    - app0
+
+push_image_to_gcr:
+  image: docker:latest
+  stage: publish
+  script:
+    - echo "Building image..."
+    - echo $IMAGE_TAG
+    - docker info
+    - docker login -u _json_key -p "$GCLOUD_SERVICE_KEY" https://us.gcr.io
+    # Staging build
+    - docker build --build-arg APP_ENDPOINT=https://staging.scoutlit.com -t ${APP_NAME}-staging .
+    - docker tag ${APP_NAME}-staging us.gcr.io/$GCP_PROJECT_ID/${APP_NAME}-staging:$IMAGE_TAG
+    - docker push us.gcr.io/$GCP_PROJECT_ID/${APP_NAME}-staging:$IMAGE_TAG
+    #Prod build
+    - docker build --build-arg APP_ENDPOINT=https://production.scoutlit.com -t $APP_NAME .
+    - docker tag $APP_NAME us.gcr.io/$GCP_PROJECT_ID/$APP_NAME
+    - docker tag $APP_NAME us.gcr.io/$GCP_PROJECT_ID/$APP_NAME:$IMAGE_TAG
+    - docker push us.gcr.io/$GCP_PROJECT_ID/$APP_NAME:latest
+    - docker push us.gcr.io/$GCP_PROJECT_ID/$APP_NAME:$IMAGE_TAG
+
+  only:
+    - master
+  tags:
+    - docker
+    - app0
+    
+
+k8s-deploy-staging:
+  image: google/cloud-sdk
+  stage: staging
+  script:
+    - echo "$GCLOUD_SERVICE_KEY" > key.json
+    - gcloud auth activate-service-account --key-file key.json
+    - gcloud config set compute/zone $GCP_REGION
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud container clusters get-credentials $CLUSTER_NAME
+    - kubectl version
+    - kubectl cluster-info
+    - cd $CI_PROJECT_DIR/kubernetes/
+    - echo "Deploying to ${CI_ENVIRONMENT_SLUG}..."
+    - sed -i "s/__APP_NAME__/${APP_NAME}/" $K8S_FILES
+    - sed -i "s/__APP_PORT__/${APP_PORT}/" $K8S_FILES
+    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" $K8S_FILES
+    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" $K8S_FILES
+    - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" $K8S_FILES
+    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" $K8S_FILES
+    - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
+  environment:
+    name: staging
+    url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-dashboard
+  only:
+    - master
+  tags:
+    - app0
+    - docker
+  
+k8s-deploy-production:
+  image: google/cloud-sdk
+  stage: production
+  script:
+    - echo "$GCLOUD_SERVICE_KEY" > key.json
+    - gcloud auth activate-service-account --key-file key.json
+    - gcloud config set compute/zone $GCP_REGION
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud container clusters get-credentials $CLUSTER_NAME
+    - kubectl version
+    - kubectl cluster-info
+    - cd $CI_PROJECT_DIR/kubernetes/
+    - echo "Deploying to ${CI_ENVIRONMENT_SLUG}..."
+    - sed -i "s/__APP_NAME__/${APP_NAME}/" $K8S_FILES
+    - sed -i "s/__APP_PORT__/${APP_PORT}/" $K8S_FILES
+    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" $K8S_FILES
+    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" $K8S_FILES
+    - sed -i "s/__IMAGE_NAME__/${APP_NAME}/" $K8S_FILES
+    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" $K8S_FILES
+    - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
+  environment:
+    name: production
+    url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-dashboard
+  only:
+    - master
+  when: manual  
+  tags:
+    - app0
+    - docker

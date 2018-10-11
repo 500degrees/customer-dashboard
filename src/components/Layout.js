@@ -10,7 +10,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Header from './Header';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
-import LayoutStyles from './LayoutStyles';
+import LayoutStyles from './layoutStyles';
 
 class Layout extends React.Component {
   state = {
