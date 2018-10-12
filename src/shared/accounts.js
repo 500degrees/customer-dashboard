@@ -8,7 +8,7 @@ export const clean = async (token, email) => {
     headers,
     method: 'POST'
   }
-  const response = await fetch(`${API}/api/transfer/clean/${email}`, fetchOptions);
+  const response = await fetch(`${API}/transfer/clean/${email}`, fetchOptions);
   const data = await response.json();
   return data;
 }

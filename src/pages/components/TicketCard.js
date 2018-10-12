@@ -26,6 +26,7 @@ function SimpleCard({ classes, ticket, cleanAccount, transferAccount, closeTicke
   return (
     <Card className={classes.card}>
       <CardContent>
+        {ticket.createdAt}
         <Typography color="textSecondary" gutterBottom variant="h6">
           <a href={`mailto:${ticket.email}`}>{ticket.email}</a>
         </Typography>
