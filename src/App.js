@@ -11,6 +11,7 @@ export class App extends Component {
     signedIn: false,
     email: '',
     password: '',
+    error: '',
   }
   onLoadingUpdate = (isLoading) => {
     console.log('Updating loading', isLoading)
@@ -19,14 +20,19 @@ export class App extends Component {
   siginIn = async e => {
     console.log('Sigining in', e, this.state);
     e.preventDefault();
-    const signinInfo = await login(this.state.email, this.state.password);
-    console.log('Sigin in', signinInfo);
-    if (signinInfo.user) {
-      this.setState({ 
-        signedIn: true, 
-        user: signinInfo.user, 
-        token: signinInfo.accessToken 
-      });
+    try {
+      const signinInfo = await login(this.state.email, this.state.password);
+      console.log('Sigin in', signinInfo);
+      if (signinInfo.user) {
+        this.setState({
+          signedIn: true,
+          user: signinInfo.user,
+          token: signinInfo.accessToken
+        });
+      }
+    } catch (e) {
+      console.log('Error loging in', e);
+      this.setState({ error: 'error loging in' });
     }
   }
   updateField = fieldName => event => {
@@ -36,9 +42,9 @@ export class App extends Component {
   }
 
   render() {
-    const page = this.state.signedIn ? 
-    <Layout page={<TicketsPage token={this.state.token} onLoadingUpdate={this.onLoadingUpdate} />} loading={this.state.loading} /> :
-    <LoginPage onSignIn={this.siginIn} updateField={this.updateField} />
+    const page = this.state.signedIn ?
+      <Layout page={<TicketsPage token={this.state.token} onLoadingUpdate={this.onLoadingUpdate} />} loading={this.state.loading} /> :
+      <LoginPage onSignIn={this.siginIn} updateField={this.updateField} />
     return (
       <div style={{ height: '100vh' }}>
         {page}
