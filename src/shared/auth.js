@@ -3,7 +3,7 @@ import { API } from '../shared/constants';
 
 export const login = async (username, password) => {
   try {
-    const response = await fetch(`${API}/auth/basic/login`, {
+    const response = await fetch(`${API}/api/auth/basic/login`, {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),

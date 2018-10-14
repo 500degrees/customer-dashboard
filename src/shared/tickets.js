@@ -9,7 +9,7 @@ export const getTickets = async (token) => {
       headers,
       method: 'GET'
     }
-    const response = await fetch(`${API}/support/tickets`, fetchOptions);
+    const response = await fetch(`${API}/api/support/tickets`, fetchOptions);
     const data = await response.json();
     return data && data.length && data.length > 0 ? data.filter(t => !t.resolved) : [];
   } catch (e) {
