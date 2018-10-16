@@ -7,13 +7,12 @@ variables:
   DOCKER_DRIVER: overlay
   APP_NAME: dashboard
   SHORT_TAG: 'echo $$CI_COMMIT_SHA | cut -c1-8'
-  APP_PORT: 80
+  APP_PORT: '80'
   GCP_REGION: us-central1
   GCP_PROJECT_ID: scoutlit-1267
   CLUSTER_NAME: octopus
-  PKG_LIST: $(go list ./... | grep -v /vendor/)
   REPO_NAME: gitlab.com/500degrees/basketball-tracker/static/customer-dashboard
-  K8S_FILES: "03-deployment.yaml 01-service.yaml 02-ingress.yaml"
+  K8S_FILES: "01-service.yaml 02-ingress.yaml 03-deployment.yaml"
 
 stages:
   - test
@@ -32,9 +31,6 @@ unit_tests:
   stage: test
   script:
     - echo "Add unit testing for react"
-  # artifacts:
-  #   paths:
-  #     - ./coverage.html
   tags:
     - docker
     - app0
@@ -116,7 +112,7 @@ k8s-deploy-production:
     - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
   environment:
     name: production
-    url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-dashboard
+    url: https://www.scoutlit.com/customer-dashboard
   only:
     - master
   when: manual  

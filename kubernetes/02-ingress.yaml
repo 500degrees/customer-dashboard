@@ -8,7 +8,7 @@ metadata:
     traefik.frontend.rule.type: PathPrefixStrip
 spec:
   rules:
-  - host: __CI_ENVIRONMENT_SLUG__.scoutlit.com
+  - host: www.scoutlit.com
     http:
       paths:
       - path: /customer-dashboard
