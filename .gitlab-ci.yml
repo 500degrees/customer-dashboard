@@ -75,12 +75,12 @@ k8s-deploy-staging:
     - kubectl cluster-info
     - cd $CI_PROJECT_DIR/kubernetes/
     - echo "Deploying to ${CI_ENVIRONMENT_SLUG}..."
-    - sed -i "s/__APP_NAME__/${APP_NAME}/" K8S_FILES_STG
-    - sed -i "s/__APP_PORT__/${APP_PORT}/" K8S_FILES_STG
-    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" K8S_FILES_STG
-    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" K8S_FILES_STG
-    - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" K8S_FILES_STG
-    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" K8S_FILES_STG
+    - sed -i "s/__APP_NAME__/${APP_NAME}/" $K8S_FILES_STG
+    - sed -i "s/__APP_PORT__/${APP_PORT}/" $K8S_FILES_STG
+    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" $K8S_FILES_STG
+    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" $K8S_FILES_STG
+    - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" $K8S_FILES_STG
+    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" $K8S_FILES_STG
     - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
   environment:
     name: staging
