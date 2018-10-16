@@ -81,7 +81,9 @@ k8s-deploy-staging:
     - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" $K8S_FILES_STG
     - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" $K8S_FILES_STG
     - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" $K8S_FILES_STG
-    - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
+    # - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
+    - kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f 01-service.yaml
+    - kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f 03-deployment.yaml
   environment:
     name: staging
     url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-portal
