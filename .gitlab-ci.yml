@@ -5,13 +5,14 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay
-  APP_NAME: dashboard
+  APP_NAME: customer-portal
   SHORT_TAG: 'echo $$CI_COMMIT_SHA | cut -c1-8'
   APP_PORT: '80'
   GCP_REGION: us-central1
   GCP_PROJECT_ID: scoutlit-1267
   CLUSTER_NAME: octopus
-  REPO_NAME: gitlab.com/500degrees/basketball-tracker/static/customer-dashboard
+  REPO_NAME: gitlab.com/500degrees/basketball-tracker/static/customer-portal
+  K8S_FILES_STG: "01-service.yaml 03-deployment.yaml"
   K8S_FILES: "01-service.yaml 02-ingress.yaml 03-deployment.yaml"
 
 stages:
@@ -48,7 +49,7 @@ push_image_to_gcr:
     - docker tag ${APP_NAME}-staging us.gcr.io/$GCP_PROJECT_ID/${APP_NAME}-staging:$IMAGE_TAG
     - docker push us.gcr.io/$GCP_PROJECT_ID/${APP_NAME}-staging:$IMAGE_TAG
     #Prod build
-    - docker build --build-arg APP_ENDPOINT=https://production.scoutlit.com -t $APP_NAME .
+    - docker build --build-arg APP_ENDPOINT=https://www.scoutlit.com -t $APP_NAME .
     - docker tag $APP_NAME us.gcr.io/$GCP_PROJECT_ID/$APP_NAME
     - docker tag $APP_NAME us.gcr.io/$GCP_PROJECT_ID/$APP_NAME:$IMAGE_TAG
     - docker push us.gcr.io/$GCP_PROJECT_ID/$APP_NAME:latest
@@ -74,16 +75,16 @@ k8s-deploy-staging:
     - kubectl cluster-info
     - cd $CI_PROJECT_DIR/kubernetes/
     - echo "Deploying to ${CI_ENVIRONMENT_SLUG}..."
-    - sed -i "s/__APP_NAME__/${APP_NAME}/" $K8S_FILES
-    - sed -i "s/__APP_PORT__/${APP_PORT}/" $K8S_FILES
-    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" $K8S_FILES
-    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" $K8S_FILES
-    - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" $K8S_FILES
-    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" $K8S_FILES
+    - sed -i "s/__APP_NAME__/${APP_NAME}/" K8S_FILES_STG
+    - sed -i "s/__APP_PORT__/${APP_PORT}/" K8S_FILES_STG
+    - sed -i "s/__CI_ENVIRONMENT_SLUG__/${CI_ENVIRONMENT_SLUG}/" K8S_FILES_STG
+    - sed -i "s/__VERSION__/${CI_COMMIT_TAG}/" K8S_FILES_STG
+    - sed -i "s/__IMAGE_NAME__/${APP_NAME}-staging/" K8S_FILES_STG
+    - sed -i "s/__IMAGE_TAG__/${IMAGE_TAG}/" K8S_FILES_STG
     - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
   environment:
     name: staging
-    url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-dashboard
+    url: https://$CI_ENVIRONMENT_SLUG.scoutlit.com/customer-portal
   only:
     - master
   tags:
@@ -112,7 +113,7 @@ k8s-deploy-production:
     - (for f in $CI_PROJECT_DIR/kubernetes/*.yaml; do kubectl apply --namespace=$CI_ENVIRONMENT_SLUG -f $f; done);
   environment:
     name: production
-    url: https://www.scoutlit.com/customer-dashboard
+    url: https://www.scoutlit.com/customer-portal
   only:
     - master
   when: manual  

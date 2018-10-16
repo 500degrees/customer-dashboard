@@ -11,7 +11,7 @@ spec:
   - host: www.scoutlit.com
     http:
       paths:
-      - path: /customer-dashboard
+      - path: /customer-portal
         backend:
           serviceName: __APP_NAME__
           servicePort: http
