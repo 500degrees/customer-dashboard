@@ -2,6 +2,7 @@ import React from 'react';
 import { getTickets, closeTicket } from '../shared/tickets';
 import { clean, transfer } from '../shared/accounts';
 import TicketsContainer from './components/TicketsContainer';
+import TransferForm from './components/TransferForm';
 
 export class TicketsPage extends React.Component {
 
@@ -31,11 +32,11 @@ export class TicketsPage extends React.Component {
         console.log('clean account', email);
         this.props.onLoadingUpdate(true);
         await clean(this.props.token, email);
-        this.props.onLoadingUpdate(false);
         this.setState({ message: `${email} data cleaned` });
       } catch (e) {
-        this.setState({ message: 'Error cleaning account for ' + email });
+        this.setState({ message: `Error cleaning account for "${email}"` });
       }
+      this.props.onLoadingUpdate(false);
     }
   }
 
@@ -45,11 +46,11 @@ export class TicketsPage extends React.Component {
         console.log('transfer account', email);
         this.props.onLoadingUpdate(true);
         await transfer(this.props.token, email);
-        this.props.onLoadingUpdate(false);
         this.setState({ message: `${email} data transfered` });
       } catch (e) {
-        this.setState({ message: 'Error cleaning up account for ' + email });
+        this.setState({ message: `Error transfering account for "${email}"` });
       }
+      this.props.onLoadingUpdate(false);
     }
   }
 
@@ -59,10 +60,10 @@ export class TicketsPage extends React.Component {
         this.props.onLoadingUpdate(true);
         await closeTicket(this.props.token, id);
         await this.reloadTickets();
-        this.props.onLoadingUpdate(false);
       } catch (e) {
         this.setState({ message: 'Error closing ticket' });
       }
+      this.props.onLoadingUpdate(false);
     }
   }
 
@@ -70,6 +71,7 @@ export class TicketsPage extends React.Component {
     return (
       <div>
         <div style={{ marginBottom: 20 }}>{this.state.message}</div>
+        <TransferForm onCleanAccount={this.cleanAccount} onTransferAccount={this.transferAccount} />
         <TicketsContainer
           tickets={this.state.tickets}
           cleanAccount={this.cleanAccount}
