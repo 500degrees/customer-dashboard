@@ -10,9 +10,60 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Header from './Header';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
-import LayoutStyles from './LayoutStyles';
+import { drawerWidth } from '../shared/constants';
 
-class Layout extends React.Component {
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    height: '100vh',
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+  },
+  menuButton: {
+    marginLeft: 12,
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing.unit * 7,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    overflowY: 'auto',
+  },
+});
+
+export class Layout extends React.Component {
   state = {
     open: false,
   };
@@ -62,4 +113,4 @@ Layout.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(LayoutStyles, { withTheme: true })(Layout);
+export default withStyles(styles, { withTheme: true })(Layout);
