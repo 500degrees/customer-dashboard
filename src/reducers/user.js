@@ -1,6 +1,6 @@
 import { LOGIN_SUCCESS, LOGIN_FAILED } from '../actions';
 
-export default (state = { toke: '', loggedIn: false, user: {} }, action) => {
+export default (state = { token: '', loggedIn: false, user: {} }, action) => {
     switch(action.type) {
         case LOGIN_SUCCESS:
             return {
