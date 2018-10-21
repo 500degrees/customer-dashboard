@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import TicketsPage from './pages/TicketsPage';
 import LoginPage from './pages/LoginPage';
 
 import { login } from './shared/auth';
+import DashboarPage from './pages/DashboarPage';
+import AccountInfoPage from './pages/AccountInfoPage';
 
 export class App extends Component {
   state = {
@@ -46,9 +49,11 @@ export class App extends Component {
       <Layout page={<TicketsPage token={this.state.token} onLoadingUpdate={this.onLoadingUpdate} />} loading={this.state.loading} /> :
       <LoginPage onSignIn={this.siginIn} updateField={this.updateField} />
     return (
-      <div style={{ height: '100vh' }}>
-        {page}
-      </div>
+        <div style={{ height: '100vh' }}>
+          <Route path='/' exact component={DashboarPage} />
+          <Route path='/account-info' component={AccountInfoPage} />
+          <Route path='/tickets' component={TicketsPage} />
+        </div>
     );
   }
 }
