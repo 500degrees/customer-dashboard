@@ -7,11 +7,12 @@ import LoginPage from './pages/LoginPage';
 import { login } from './shared/auth';
 import DashboarPage from './pages/DashboarPage';
 import AccountInfoPage from './pages/AccountInfoPage';
+import SecretRoute from './components/SecretRoute';
 
 export class App extends Component {
   state = {
     loading: false,
-    signedIn: false,
+    signedIn: true,
     email: '',
     password: '',
     error: '',
@@ -51,8 +52,9 @@ export class App extends Component {
     return (
         <div style={{ height: '100vh' }}>
           <Route path='/' exact component={DashboarPage} />
+          <Route path='/login' render={(props) => <LoginPage {...props} onSignIn={this.siginIn} updateField={this.updateField}></LoginPage>} />
           <Route path='/account-info' component={AccountInfoPage} />
-          <Route path='/tickets' component={TicketsPage} />
+          <SecretRoute path='/tickets' component={TicketsPage} authorized={this.state.signedIn}/>
         </div>
     );
   }
