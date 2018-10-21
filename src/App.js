@@ -3,8 +3,6 @@ import { Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import TicketsPage from './pages/TicketsPage';
 import LoginPage from './pages/LoginPage';
-
-import { login } from './shared/auth';
 import DashboarPage from './pages/DashboarPage';
 import AccountInfoPage from './pages/AccountInfoPage';
 import SecretRoute from './components/SecretRoute';
@@ -12,49 +10,26 @@ import SecretRoute from './components/SecretRoute';
 export class App extends Component {
   state = {
     loading: false,
-    signedIn: true,
-    email: '',
-    password: '',
     error: '',
   }
   onLoadingUpdate = (isLoading) => {
     console.log('Updating loading', isLoading)
     this.setState({ loading: isLoading });
   }
-  siginIn = async e => {
-    console.log('Sigining in', e, this.state);
-    e.preventDefault();
-    try {
-      const signinInfo = await login(this.state.email, this.state.password);
-      console.log('Sigin in', signinInfo);
-      if (signinInfo.user) {
-        this.setState({
-          signedIn: true,
-          user: signinInfo.user,
-          token: signinInfo.accessToken
-        });
-      }
-    } catch (e) {
-      console.log('Error loging in', e);
-      this.setState({ error: 'error loging in' });
-    }
-  }
-  updateField = fieldName => event => {
-    this.setState({
-      [fieldName]: event.target.value
-    });
-  }
 
   render() {
-    const page = this.state.signedIn ?
-      <Layout page={<TicketsPage token={this.state.token} onLoadingUpdate={this.onLoadingUpdate} />} loading={this.state.loading} /> :
-      <LoginPage onSignIn={this.siginIn} updateField={this.updateField} />
     return (
         <div style={{ height: '100vh' }}>
           <Route path='/' exact component={DashboarPage} />
           <Route path='/login' render={(props) => <LoginPage {...props} onSignIn={this.siginIn} updateField={this.updateField}></LoginPage>} />
           <Route path='/account-info' component={AccountInfoPage} />
-          <SecretRoute path='/tickets' component={TicketsPage} authorized={this.state.signedIn}/>
+          <SecretRoute path='/tickets' reder={(props) => 
+            <Layout page={
+              <TicketsPage 
+                token={this.state.token} 
+                onLoadingUpdate={this.onLoadingUpdate} />
+            }
+              loading={this.state.loading} />}/>
         </div>
     );
   }
