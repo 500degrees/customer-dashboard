@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,30 +12,27 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { login } from '../shared/auth';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { onLoginSuccess, onLoginFailed } from '../actions';
 
 class LoginPage extends React.Component {
-
   state = {
-    signedIn: true,
     email: '',
     password: '',
+    redirectToPreviousRoute: false
   }
+
   siginIn = async e => {
-    console.log('Sigining in', e, this.state);
     e.preventDefault();
     try {
       const signinInfo = await login(this.state.email, this.state.password);
-      console.log('Sigin in', signinInfo);
       if (signinInfo.user) {
         this.setState({
-          signedIn: true,
-          user: signinInfo.user,
-          token: signinInfo.accessToken
+          redirectToPreviousRoute: true
         });
       }
+      this.props.loginSuccess(signinInfo.accessToken, signinInfo.user);
     } catch (e) {
-      console.log('Error loging in', e);
-      this.setState({ error: 'error loging in' });
+      this.props.loginFailed(e.toString());
     }
   }
   updateField = fieldName => event => {
@@ -43,7 +42,13 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, location } = this.props;
+    const { from } = location.state || { from: { pathname: "/" } };
+    const { redirectToPreviousRoute } = this.state;
+    console.log('login page', location, from, redirectToPreviousRoute);
+    if (redirectToPreviousRoute) {
+      return <Redirect to={from} />;
+    }
     return (
       <React.Fragment>
         <CssBaseline />
@@ -54,7 +59,7 @@ class LoginPage extends React.Component {
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
-          </Typography>
+            </Typography>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
@@ -85,7 +90,7 @@ class LoginPage extends React.Component {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
-                onClick={this.onSignIn}
+                onClick={this.siginIn}
               >
                 Sign in
             </Button>
@@ -129,4 +134,11 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(LoginPage)
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  loginSuccess: (token, user) => dispatch(onLoginSuccess(token, user)),
+  loginFailed: (error) => dispatch(onLoginFailed(error)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPage));

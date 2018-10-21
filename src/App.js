@@ -20,16 +20,19 @@ export class App extends Component {
   render() {
     return (
         <div style={{ height: '100vh' }}>
-          <Route path='/' exact component={DashboarPage} />
           <Route path='/login' render={(props) => <LoginPage {...props} onSignIn={this.siginIn} updateField={this.updateField}></LoginPage>} />
-          <Route path='/account-info' component={AccountInfoPage} />
-          <SecretRoute path='/tickets' reder={(props) => 
-            <Layout page={
-              <TicketsPage 
-                token={this.state.token} 
-                onLoadingUpdate={this.onLoadingUpdate} />
-            }
-              loading={this.state.loading} />}/>
+          <SecretRoute path='/' exact component={DashboarPage} />
+          <SecretRoute path='/account-info' component={AccountInfoPage} />
+          <SecretRoute path='/tickets' reder={(props) => {
+            console.log('rendering tickets', props);
+            return (
+              <Layout 
+                page={<TicketsPage 
+                  token={this.state.token} 
+                  onLoadingUpdate={this.onLoadingUpdate} />}
+                loading={this.state.loading} />
+            );
+          }}/>
         </div>
     );
   }
