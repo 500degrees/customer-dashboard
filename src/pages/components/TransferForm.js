@@ -37,7 +37,7 @@ export class TransferForm extends React.Component {
         return (
             <Paper className={classes.container} >
                 <form className={classes.formContainer} noValidate autoComplete="off">
-                    <Typography variant="caption">Manual Transfer</Typography>
+                    <Typography variant="h5">Manual Transfer</Typography>
                     <TextField
                         id="email"
                         label="Email"

@@ -44,7 +44,7 @@ const Header = ({ classes, open, handleDrawerOpen, loading }) => {
         </IconButton>
         <Typography variant="h6" color="inherit" noWrap>
           Customer Dashboard
-            </Typography>
+        </Typography>
       </Toolbar>
       {loading ? <LinearProgress color="secondary" /> : null}
     </AppBar>

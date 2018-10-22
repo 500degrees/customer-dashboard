@@ -13,7 +13,7 @@ export const clean = async (token, email) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log('Error cleaning account');
+    console.log('Error cleaning account', e);
     throw e;
   }
 }
@@ -30,7 +30,7 @@ export const transfer = async (token, email) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log('Error transfering account');
+    console.log('Error transfering account', e);
     throw e;
   }
 }

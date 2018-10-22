@@ -22,7 +22,7 @@ const styles = {
   },
 };
 
-function SimpleCard({ classes, ticket, cleanAccount, transferAccount, closeTicket }) {
+function TicketCard({ classes, ticket, cleanAccount, transferAccount, closeTicket }) {
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -43,8 +43,8 @@ function SimpleCard({ classes, ticket, cleanAccount, transferAccount, closeTicke
   );
 }
 
-SimpleCard.propTypes = {
+TicketCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleCard);
+export default withStyles(styles)(TicketCard);
