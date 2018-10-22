@@ -1,18 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { getTickets, closeTicket } from '../shared/tickets';
 import { clean, transfer } from '../shared/accounts';
 import TicketsContainer from './components/TicketsContainer';
 import TransferForm from './components/TransferForm';
+import { onFetchTickets } from '../actions';
 
 export class TicketsPage extends React.Component {
 
-  state = {
-    tickets: [],
-    message: 'Some message'
-  };
-
   componentDidMount() {
-    this.reloadTickets()
+    console.log('Fetching tickets');
+    this.props.fetchTickets();
   }
 
   async reloadTickets() {
@@ -70,10 +68,10 @@ export class TicketsPage extends React.Component {
   render() {
     return (
       <div>
-        <div style={{ marginBottom: 20 }}>{this.state.message}</div>
+        <div style={{ marginBottom: 20 }}>{this.props.message}</div>
         <TransferForm onCleanAccount={this.cleanAccount} onTransferAccount={this.transferAccount} />
         <TicketsContainer
-          tickets={this.state.tickets}
+          tickets={this.props.tickets}
           cleanAccount={this.cleanAccount}
           transferAccount={this.transferAccount}
           closeTicket={this.closeTicket} />
@@ -82,4 +80,13 @@ export class TicketsPage extends React.Component {
   }
 }
 
-export default TicketsPage;
+const mapStateToProps = state => ({
+  tickets: state.tickets.all,
+  message: state.tickets.error,
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchTickets: () => dispatch(onFetchTickets())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TicketsPage);

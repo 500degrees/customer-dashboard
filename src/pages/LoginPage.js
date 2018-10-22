@@ -45,7 +45,6 @@ class LoginPage extends React.Component {
     const { classes, location } = this.props;
     const { from } = location.state || { from: { pathname: "/" } };
     const { redirectToPreviousRoute } = this.state;
-    console.log('login page', location, from, redirectToPreviousRoute);
     if (redirectToPreviousRoute) {
       return <Redirect to={from} />;
     }

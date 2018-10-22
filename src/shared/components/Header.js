@@ -7,8 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-
-import { drawerWidth } from '../shared/constants';
+import { drawerWidth } from '../constants';
 
 const styles = theme => ({
   appBar: {
