@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -103,6 +104,7 @@ export class Dashboard extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <SecretRoute path="/tickets" component={TicketsPage} />
+          <Redirect from="/" to="tickets" />
         </main>
       </div>
     );
