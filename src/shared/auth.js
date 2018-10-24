@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch';
-import { API } from '../shared/constants';
+import { AUTH_API } from '../shared/constants';
 
 export const login = async (username, password) => {
   try {
-    const response = await fetch(`${API}/api/auth/basic/login`, {
+    const response = await fetch(`${AUTH_API}/api/auth/basic/login`, {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),

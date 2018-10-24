@@ -59,7 +59,7 @@ class LoginPage extends React.Component {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={this.siginIn}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>
                 <Input

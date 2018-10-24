@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { API } from './constants';
+import { TRANSFER_API } from './constants';
 
 export const clean = async (token, email) => {
   try {
@@ -9,7 +9,7 @@ export const clean = async (token, email) => {
       headers,
       method: 'POST'
     }
-    const response = await fetch(`${API}/api/transfer/clean/${email}`, fetchOptions);
+    const response = await fetch(`${TRANSFER_API}/api/transfer/clean/${email}`, fetchOptions);
     const data = await response.json();
     return data;
   } catch (e) {
@@ -26,7 +26,7 @@ export const transfer = async (token, email) => {
       headers,
       method: 'POST'
     }
-    const response = await fetch(`${API}/api/transfer/${email}`, fetchOptions);
+    const response = await fetch(`${TRANSFER_API}/api/transfer/${email}`, fetchOptions);
     const data = await response.json();
     return data;
   } catch (e) {

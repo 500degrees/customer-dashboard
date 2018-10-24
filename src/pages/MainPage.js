@@ -12,7 +12,7 @@ import Header from '../shared/components/Header';
 import { drawerWidth } from '../shared/constants';
 import SecretRoute from '../shared/components/SecretRoute';
 import TicketsPage from './TicketsPage';
-import CustomerStatusPage from './CustomerStatusPage';
+import DashboardPage from './DashboardPage';
 import SideMenu from './components/SideMenu';
 
 const styles = theme => ({
@@ -66,7 +66,7 @@ const styles = theme => ({
   },
 });
 
-export class Dashboard extends React.Component {
+export class MainPage extends React.Component {
   state = {
     open: false,
   };
@@ -110,8 +110,8 @@ export class Dashboard extends React.Component {
           <div className={classes.toolbar} />
           <Switch>
             <SecretRoute path="/tickets" component={TicketsPage} />
-            <SecretRoute path="/customer-status" component={CustomerStatusPage} />
-            <SecretRoute path="/" component={CustomerStatusPage} />
+            <SecretRoute path="/dashboard" component={DashboardPage} />
+            <SecretRoute path="/" component={DashboardPage} />
           </Switch>
         </main>
       </div>
@@ -119,4 +119,4 @@ export class Dashboard extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Dashboard);
+export default withStyles(styles, { withTheme: true })(MainPage);
