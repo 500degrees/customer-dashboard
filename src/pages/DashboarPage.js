@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,10 +9,11 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Header from '../shared/components/Header';
-import { mailFolderListItems, otherMailFolderListItems } from '../shared/components/tileData';
 import { drawerWidth } from '../shared/constants';
 import SecretRoute from '../shared/components/SecretRoute';
 import TicketsPage from './TicketsPage';
+import CustomerStatusPage from './CustomerStatusPage';
+import SideMenu from './components/SideMenu';
 
 const styles = theme => ({
   root: {
@@ -78,6 +79,10 @@ export class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  navigate = route => () => {
+    this.props.history.push(route);
+  }
+
   render() {
     const { classes, theme, loading } = this.props;
 
@@ -97,14 +102,17 @@ export class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider />
-          <List>{mailFolderListItems}</List>
-          <Divider />
-          <List>{otherMailFolderListItems}</List>
+          <List>
+            <SideMenu navigate={this.navigate} />
+          </List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <SecretRoute path="/tickets" component={TicketsPage} />
-          <Redirect from="/" to="tickets" />
+          <Switch>
+            <SecretRoute path="/tickets" component={TicketsPage} />
+            <SecretRoute path="/customer-status" component={CustomerStatusPage} />
+            <SecretRoute path="/" component={CustomerStatusPage} />
+          </Switch>
         </main>
       </div>
     );
