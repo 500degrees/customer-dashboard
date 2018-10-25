@@ -4,11 +4,13 @@ import { Typography } from '@material-ui/core';
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 import { onFetchDashboardData } from '../actions';
 
+const todaySDate = new Date();
+
 export class DashboardPage extends React.Component {
 
   state = {
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date(todaySDate.getFullYear(), todaySDate.getMonth(), todaySDate.getDate(), 0, 0, 0, 0),
+    endDate: new Date(todaySDate.getFullYear(), todaySDate.getMonth(), todaySDate.getDate(), 23, 59, 59, 999),
   }
 
   handleDateChange = propName => (date) => {
@@ -17,7 +19,7 @@ export class DashboardPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchData();
+    this.props.fetchData(this.state.startDate, this.state.endDate);
   }
 
   render() {
