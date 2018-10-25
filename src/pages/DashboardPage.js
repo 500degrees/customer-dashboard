@@ -15,11 +15,11 @@ export class DashboardPage extends React.Component {
 
   handleDateChange = propName => (date) => {
     this.setState({ [propName]: date });
-    this.props.fetchData(this.state.startDate, this.state.endDate);
+    this.props.fetchData(this.state.startDate.toISOString(), this.state.endDate.toISOString());
   }
 
   componentDidMount() {
-    this.props.fetchData(this.state.startDate, this.state.endDate);
+    this.props.fetchData(this.state.startDate.toISOString(), this.state.endDate.toISOString());
   }
 
   render() {
@@ -35,7 +35,7 @@ export class DashboardPage extends React.Component {
         />
         <DateTimePicker
           value={endDate}
-          label="From"
+          label="to"
           onChange={this.handleDateChange('endDate')}
         />
         <pre>
