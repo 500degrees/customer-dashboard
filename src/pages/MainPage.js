@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -106,6 +108,7 @@ export class MainPage extends React.Component {
             <SideMenu navigate={this.navigate} />
           </List>
         </Drawer>
+        <LinearProgress />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
@@ -119,4 +122,8 @@ export class MainPage extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(MainPage);
+const mapStateToProps = state => ({
+  loading: state.status.openRequests > 0
+})
+
+export default connect(mapStateToProps)(withStyles(styles, { withTheme: true })(MainPage));
