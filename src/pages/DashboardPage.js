@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 import { onFetchDashboardData } from '../actions';
+import TotalsCharts from './components/TotalsCharts';
 
 const todaySDate = new Date();
 
@@ -24,6 +25,14 @@ export class DashboardPage extends React.Component {
 
   render() {
     const { startDate, endDate } = this.state;
+    const { data } = this.props;
+    const chartData = data && data.totalTeams ? [
+      { name: "Users", value: data.totalCoaches },
+      { name: "Teams", value: data.totalTeams },
+      { name: "Players", value: data.totalPlayers },
+      { name: "Games", value: data.totalGames },
+      { name: "Stats", value: data.totalStats },
+    ] : [];
     return (
       <div>
         <Typography variant="h6">Dashboard Page</Typography>
@@ -38,9 +47,7 @@ export class DashboardPage extends React.Component {
           label="to"
           onChange={this.handleDateChange('endDate')}
         />
-        <pre>
-          {JSON.stringify(this.props.data, 2)}
-        </pre>
+        <TotalsCharts data={chartData} />
       </div>
     )
   }

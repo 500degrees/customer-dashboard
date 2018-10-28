@@ -10,31 +10,21 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { login } from '../shared/auth';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { onLoginSuccess, onLoginFailed } from '../actions';
+import { onLogin } from '../actions';
+import { LinearProgress } from '@material-ui/core';
 
 class LoginPage extends React.Component {
   state = {
     email: '',
     password: '',
-    redirectToPreviousRoute: false
   }
 
-  siginIn = async e => {
+  siginIn = e => {
     e.preventDefault();
-    try {
-      const signinInfo = await login(this.state.email, this.state.password);
-      if (signinInfo.user) {
-        this.setState({
-          redirectToPreviousRoute: true
-        });
-      }
-      this.props.loginSuccess(signinInfo.accessToken, signinInfo.user);
-    } catch (e) {
-      this.props.loginFailed(e.toString());
-    }
+    this.props.requestLogin(this.state.email, this.state.password);
   }
+
   updateField = fieldName => event => {
     this.setState({
       [fieldName]: event.target.value
@@ -42,15 +32,15 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { classes, location } = this.props;
+    const { classes, location, loggedIn, loading } = this.props;
     const { from } = location.state || { from: { pathname: "/" } };
-    const { redirectToPreviousRoute } = this.state;
-    if (redirectToPreviousRoute) {
+    if (loggedIn) {
       return <Redirect to={from} />;
     }
     return (
       <React.Fragment>
         <CssBaseline />
+        {loading ? <LinearProgress /> : null}
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -133,11 +123,13 @@ const styles = theme => ({
   },
 });
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  loggedIn: state.user.loggedIn,
+  loading: state.status.openRequests > 0
+});
 
 const mapDispatchToProps = dispatch => ({
-  loginSuccess: (token, user) => dispatch(onLoginSuccess(token, user)),
-  loginFailed: (error) => dispatch(onLoginFailed(error)),
+  requestLogin: (email, password) => dispatch(onLogin(email, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginPage));

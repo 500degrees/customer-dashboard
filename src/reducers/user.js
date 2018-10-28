@@ -1,8 +1,8 @@
-import { LOGIN_SUCCESS, LOGIN_FAILED } from '../actions';
+import { REQUEST_LOGIN_SUCCESS, REQUEST_LOGIN_FAILED } from '../actions';
 
 export default (state = { token: '', loggedIn: false, user: {} }, action) => {
     switch(action.type) {
-        case LOGIN_SUCCESS:
+        case REQUEST_LOGIN_SUCCESS:
             return {
                 ...state, 
                 loggedIn: true, 
@@ -10,7 +10,7 @@ export default (state = { token: '', loggedIn: false, user: {} }, action) => {
                 token: action.token,
                 error: '', 
             };
-        case LOGIN_FAILED:
+        case REQUEST_LOGIN_FAILED:
             return {
                 ...state, 
                 loggedIn: false, 

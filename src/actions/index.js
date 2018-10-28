@@ -1,9 +1,9 @@
-export const LOGIN='LOGIN';
-export const LOGIN_SUCCESS='LOGIN_SUCCESS';
-export const LOGIN_FAILED='LOGIN_FAILED';
-export const onLogin = (userName, password) => ({ type: LOGIN, userName, password });
-export const onLoginSuccess = (token, user) => ({ type: LOGIN_SUCCESS, token, user });
-export const onLoginFailed = (error) => ({ type: LOGIN_FAILED, error });
+export const REQUEST_LOGIN='REQUEST_LOGIN';
+export const REQUEST_LOGIN_SUCCESS='REQUEST_LOGIN_SUCCESS';
+export const REQUEST_LOGIN_FAILED='REQUEST_LOGIN_FAILED';
+export const onLogin = (email, password) => ({ type: REQUEST_LOGIN, email, password });
+export const onLoginSuccess = (token, user) => ({ type: REQUEST_LOGIN_SUCCESS, token, user });
+export const onLoginFailed = (error) => ({ type: REQUEST_LOGIN_FAILED, error });
 // TICKETS
 export const FETCH_TICKETS='FETCH_TICKETS';
 export const FETCH_TICKETS_SUCCESS='FETCH_TICKETS_SUCCESS';
