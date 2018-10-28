@@ -11,8 +11,7 @@ import { clean, transfer } from '../shared/accounts';
 export function *cleanAccount(action) {
     try {
         const state = yield select();
-        const cleanResponse = yield call(clean, state.user.token, action.email);
-        console.log('Account clean', cleanResponse);
+        yield call(clean, state.user.token, action.email);
         yield put(onAccountCleanSuccess(action.email));
     } catch (e) {
         yield put(onAccountCleanFailed(`Failed to clean "${action.email}"`));
@@ -22,8 +21,7 @@ export function *cleanAccount(action) {
 export function *transferAccount(action) {
     try {
         const state = yield select();
-        const transferResponse = yield call(transfer, state.user.token, action.email);
-        console.log('Account transfered', transferResponse);
+        yield call(transfer, state.user.token, action.email);
         yield put(onAccountTransferSuccess(action.email));
     } catch (e) {
         yield put(onAccountTransferFailed(`Failed to transfer "${action.email}"`));
