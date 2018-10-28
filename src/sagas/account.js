@@ -3,8 +3,8 @@ import {
     onAccountCleanFailed,
     onAccountTransferSuccess,
     onAccountTransferFailed,
-    CLEAN_ACCOUNT,
-    TRANSFER_ACCOUNT } from "../actions";
+    REQUEST_CLEAN_ACCOUNT,
+    REQUEST_TRANSFER_ACCOUNT } from "../actions";
 import { takeLatest, put, call, select } from "redux-saga/effects";
 import { clean, transfer } from '../shared/accounts';
 
@@ -29,6 +29,6 @@ export function *transferAccount(action) {
 }
 
 export default [
-    takeLatest(CLEAN_ACCOUNT, cleanAccount),
-    takeLatest(TRANSFER_ACCOUNT, transferAccount),
+    takeLatest(REQUEST_CLEAN_ACCOUNT, cleanAccount),
+    takeLatest(REQUEST_TRANSFER_ACCOUNT, transferAccount),
 ];

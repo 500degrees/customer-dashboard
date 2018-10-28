@@ -1,4 +1,4 @@
-import { onFetchTicketsFailed, onFetchTicketsSuccess, FETCH_TICKETS, onCloseTicketFailed, CLOSE_TICKET, onCloseTicketSuccess } from "../actions";
+import { onFetchTicketsFailed, onFetchTicketsSuccess, FETCH_TICKETS, onCloseTicketFailed, REQUEST_CLOSE_TICKET, onCloseTicketSuccess } from "../actions";
 import { takeLatest, put, call, select } from "redux-saga/effects";
 import { getTickets, closeTicket } from '../shared/tickets';
 
@@ -24,5 +24,5 @@ export function *closeTicketSaga(action) {
 
 export default [
     takeLatest(FETCH_TICKETS, fetchTicketsSaga),
-    takeLatest(CLOSE_TICKET, closeTicketSaga),
+    takeLatest(REQUEST_CLOSE_TICKET, closeTicketSaga),
 ];
