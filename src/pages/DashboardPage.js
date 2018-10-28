@@ -38,7 +38,7 @@ export class DashboardPage extends React.Component {
     ] : [];
     return (
       <div>
-        <Typography variant="h6">Dashboard Page</Typography>
+        <Typography variant="h6">Dashboard</Typography>
         <DateTimePicker
           style={{ marginRight: 25 }}
           value={startDate}
@@ -50,7 +50,9 @@ export class DashboardPage extends React.Component {
           label="to"
           onChange={this.handleDateChange('endDate')}
         />
+        <Typography variant="subtitle1" style={{ marginTop: 15, marginBottom: 15 }}>Total Users, Teams, Players, Games and Stats</Typography>
         <TotalsCharts data={chartData} />
+        <Typography variant="subtitle1" style={{ marginTop: 15, marginBottom: 15 }}>Daily coaches created</Typography>
         <DailyUsersChart data={dailyChartData}/>
       </div>
     )
