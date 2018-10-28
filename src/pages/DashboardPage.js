@@ -4,6 +4,8 @@ import { Typography } from '@material-ui/core';
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 import { onFetchDashboardData } from '../actions';
 import TotalsCharts from './components/TotalsCharts';
+import DailyUsersChart from './components/DailyUsersChart';
+import _ from 'lodash';
 
 const todaySDate = new Date();
 
@@ -26,12 +28,13 @@ export class DashboardPage extends React.Component {
   render() {
     const { startDate, endDate } = this.state;
     const { data } = this.props;
-    const chartData = data && data.totalTeams ? [
-      { name: "Users", value: data.totalCoaches },
-      { name: "Teams", value: data.totalTeams },
-      { name: "Players", value: data.totalPlayers },
-      { name: "Games", value: data.totalGames },
-      { name: "Stats", value: data.totalStats },
+    const dailyChartData = _.sortBy(data.dailyUsers, [d => new Date(d.dateTime)]);
+    const chartData = data && data.totals && data.totals.totalTeams ? [
+      { name: "Users", value: data.totals.totalCoaches },
+      { name: "Teams", value: data.totals.totalTeams },
+      { name: "Players", value: data.totals.totalPlayers },
+      { name: "Games", value: data.totals.totalGames },
+      { name: "Stats", value: data.totals.totalStats },
     ] : [];
     return (
       <div>
@@ -48,6 +51,7 @@ export class DashboardPage extends React.Component {
           onChange={this.handleDateChange('endDate')}
         />
         <TotalsCharts data={chartData} />
+        <DailyUsersChart data={dailyChartData}/>
       </div>
     )
   }

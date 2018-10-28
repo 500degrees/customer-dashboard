@@ -8,6 +8,7 @@
     "@material-ui/icons": "^3.0.1",
     "es6-promise": "^4.2.5",
     "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.17.11",
     "material-ui-pickers": "1.0.0-rc.17",
     "moment": "^2.22.2",
     "react": "^16.5.2",
