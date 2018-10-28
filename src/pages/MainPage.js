@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Switch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -15,6 +15,7 @@ import { drawerWidth } from '../shared/constants';
 import SecretRoute from '../shared/components/SecretRoute';
 import TicketsPage from './TicketsPage';
 import DashboardPage from './DashboardPage';
+import RealtimePage from './RealtimePage';
 import SideMenu from './components/SideMenu';
 
 const styles = theme => ({
@@ -112,6 +113,7 @@ export class MainPage extends React.Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
+            <Route path='/realtime' component={RealtimePage} />
             <SecretRoute path="/tickets" component={TicketsPage} />
             <SecretRoute path="/dashboard" component={DashboardPage} />
             <SecretRoute path="/" component={DashboardPage} />
