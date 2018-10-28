@@ -17,8 +17,9 @@ export class DashboardPage extends React.Component {
   }
 
   handleDateChange = propName => (date) => {
-    this.setState({ [propName]: date });
-    this.props.fetchData(this.state.startDate.toISOString(), this.state.endDate.toISOString());
+    this.setState({ [propName]: date }, () => {
+      this.props.fetchData(this.state.startDate.toISOString(), this.state.endDate.toISOString());
+    });
   }
 
   componentDidMount() {
