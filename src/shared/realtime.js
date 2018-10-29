@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client';
 import { REALTIME_ENDPOINT } from './constants';
-const  socket = openSocket(`${REALTIME_ENDPOINT}`);
+const  socket = openSocket(`${REALTIME_ENDPOINT}`,);
 
 function subscribeToTimer(cb) {
   socket.on('timer', timestamp => cb(null, timestamp));

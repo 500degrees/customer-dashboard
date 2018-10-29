@@ -11,7 +11,7 @@ import {
 export default (state = { all:[], selected: {}, message: '' }, action) => {
     switch(action.type) {
         case FETCH_TICKETS_SUCCESS:
-            return {...state, all: action.tickets, message: 'All tickets fetched' };
+            return {...state, all: action.tickets };
         case REQUEST_TRANSFER_ACCOUNT_SUCCESS:
             return {...state, message: `"${action.email}" transfered`}
         case REQUEST_TRANSFER_ACCOUNT_FAILED:
