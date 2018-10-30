@@ -1,6 +1,6 @@
 import { REQUEST_LOGIN_SUCCESS, REQUEST_LOGIN_FAILED } from '../actions';
 
-const initialState = { token: '', loggedIn: false, user: {} };
+const initialState = process.env.REACT_APP_TEST_USER ? JSON.parse(process.env.REACT_APP_TEST_USER) : { token: '', loggedIn: false, user: {} };
 
 export default (state = initialState, action) => {
     switch(action.type) {
