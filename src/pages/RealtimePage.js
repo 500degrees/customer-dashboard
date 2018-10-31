@@ -27,11 +27,11 @@ export class RealtimePage extends React.Component {
                 {this.state.stats.map(stat => (
                     <Paper key={stat._id} style={{ marginBottom: 15, padding: 20 }}>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent:'space-between' }}>
-                        {stat.player ? 
-                            <div>{`${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}`} score a {stat.stat.name}</div> :
-                            <div>{stat.team.name} team score a {stat.stat.name}</div>
-                        }
-                        <Typography variant="subtitle1">{(new Date(stat.createdAt)).toLocaleString()}</Typography>
+                            {stat.player ? 
+                                <Typography variant="subtitle1">{`${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}`} - {stat.stat.name}</Typography> :
+                                <Typography variant="subtitle1">{stat.team.name} team - {stat.stat.name}</Typography>
+                            }
+                            <Typography variant="subtitle1">{(new Date(stat.createdAt)).toLocaleString()}</Typography>
                         </div>
                     </Paper>
                 ))}
