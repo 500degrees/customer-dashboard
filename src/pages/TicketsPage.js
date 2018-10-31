@@ -19,7 +19,7 @@ export class TicketsPage extends React.Component {
   }
 
   closeTicket = id => async () => {
-    console.log('Closing ticket', id);
+    // console.log('Closing ticket', id);
     this.props.closeTicket(id);
   }
 

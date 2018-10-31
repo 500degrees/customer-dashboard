@@ -13,7 +13,7 @@ export const getData = async (token, from, to) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     throw(e);
   }
 }
@@ -30,7 +30,7 @@ export const getDailyUsers = async (token, from, to) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     throw(e);
   }
 }

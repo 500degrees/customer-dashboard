@@ -13,7 +13,7 @@ export const getTickets = async (token) => {
     const data = await response.json();
     return data && data.length && data.length > 0 ? data.filter(t => !t.resolved) : [];
   } catch (e) {
-    console.log('Error retrieving tickets');
+    // console.log('Error retrieving tickets');
     throw e;
   }
 }
@@ -30,7 +30,7 @@ export const closeTicket = async (token, ticketId) => {
     const data = await response.json();
     return data;
   } catch (e) {
-    console.log('Error closing ticket');
+    // console.log('Error closing ticket');
     throw e;
   }
 }
