@@ -25,13 +25,13 @@ export class RealtimePage extends React.Component {
             <div>
                 <div style={{ marginBottom: 25 }}>Realtime ({this.state.timer.toLocaleTimeString()})</div>
                 {this.state.stats.map(stat => (
-                    <Paper style={{ marginBottom: 15, padding: 20 }}>
+                    <Paper key={stat._id} style={{ marginBottom: 15, padding: 20 }}>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent:'space-between' }}>
                         {stat.player ? 
                             <div>{`${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}`} score a {stat.stat.name}</div> :
                             <div>{stat.team.name} team score a {stat.stat.name}</div>
                         }
-                        <Typography variant="subtitle1">{stat.createdAt}</Typography>
+                        <Typography variant="subtitle1">{(new Date(stat.createdAt)).toLocaleString()}</Typography>
                         </div>
                     </Paper>
                 ))}
