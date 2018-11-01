@@ -67,7 +67,7 @@ export class RealtimePage extends React.Component {
                     <Card key={idx} className={classes.card}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                {stat.title}
+                                {stat.title} - {stat.statLabel}
                             </Typography>
                             <Typography variant="subtitle1">{(new Date(stat.entryDate)).toLocaleString()}</Typography>
                             <Typography variant="h5" component="h2">
