@@ -53,6 +53,7 @@ export class RealtimePage extends React.Component {
             address: stat.game.address && stat.game.address.address ? stat.game.address.address : stat.game.address,
             statLabel: stat.stat.name,
             entryDate: stat.createdAt,
+            coach: stat.userId,
         }
         return cardEntry;
     }
@@ -70,6 +71,7 @@ export class RealtimePage extends React.Component {
                                 {stat.title} - {stat.statLabel}
                             </Typography>
                             <Typography variant="subtitle1">{(new Date(stat.entryDate)).toLocaleString()}</Typography>
+                            <Typography variant="subtitle1">{stat.coach}</Typography>
                             <Typography variant="h5" component="h2">
                                 {stat.address || ''}
                             </Typography>
