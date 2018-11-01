@@ -38,7 +38,7 @@ export class RealtimePage extends React.Component {
         subscribeDatabaseChanges((err, change) => {
             // console.log('Received Stat', change);
             if (change && change.fullDocument && change.operationType === 'insert' && change.fullDocument._id) {
-                console.log('CHANGE',change.fullDocument, this.getCardEntry(change.fullDocument));
+                // console.log('CHANGE',change.fullDocument, this.getCardEntry(change.fullDocument));
                 const entries = [this.getCardEntry(change.fullDocument), ...this.state.stats];
                 this.setState({ stats: entries });
             }
@@ -71,11 +71,11 @@ export class RealtimePage extends React.Component {
                             </Typography>
                             <Typography variant="subtitle1">{(new Date(stat.entryDate)).toLocaleString()}</Typography>
                             <Typography variant="h5" component="h2">
-                                {stat.address}
+                                {stat.address || ''}
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <a target="_blank" href={`https://www.google.com/maps/place/${stat.address}`}>Google Maps</a>
+                            <a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${stat.address}`}>Google Maps</a>
                             {/* <Button size="small">Learn More</Button> */}
                         </CardActions>
                     </Card>
