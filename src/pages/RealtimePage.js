@@ -14,9 +14,11 @@ export class RealtimePage extends React.Component {
         // this.props.startRealtime();
         subscribeToTimer((err, timer) => this.setState({ timer: new Date(timer) }));
         subscribeDatabaseChanges((err, change) => {
-            // console.log('Received Stat', change);
-            const entries = [change.fullDocument, ...this.state.stats];
-            this.setState({ stats: entries });
+            console.log('Received Stat', change);
+            if (change && change.fullDocument && change.operationType === 'insert' && change.fullDocument._id) {
+                const entries = [change.fullDocument, ...this.state.stats];
+                this.setState({ stats: entries });
+            }
         });
     }
 
