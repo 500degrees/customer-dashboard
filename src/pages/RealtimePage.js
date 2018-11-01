@@ -21,10 +21,12 @@ export class RealtimePage extends React.Component {
     }
 
     render() {
+        const { stats } = this.state;
+        const validStats =  stats.filter(s => s && s._id);
         return (
             <div>
                 <div style={{ marginBottom: 25 }}>Realtime ({this.state.timer.toLocaleTimeString()})</div>
-                {this.state.stats.map(stat => (
+                {validStats.map(stat => (
                     <Paper key={stat._id} style={{ marginBottom: 15, padding: 20 }}>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent:'space-between' }}>
                             {stat.player ? 
