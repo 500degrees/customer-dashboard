@@ -1,8 +1,29 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import { connect } from 'react-redux';
 import { subscribeToTimer, subscribeDatabaseChanges } from '../shared/realtime';
 import { Typography } from '@material-ui/core';
+
+const styles = theme => ({
+    card: {
+      minWidth: 275,
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    title: {
+      fontSize: 14,
+    },
+    pos: {
+      marginBottom: 12,
+    },
+  });
+
 export class RealtimePage extends React.Component {
 
     state = {
@@ -16,28 +37,46 @@ export class RealtimePage extends React.Component {
         subscribeDatabaseChanges((err, change) => {
             // console.log('Received Stat', change);
             if (change && change.fullDocument && change.operationType === 'insert' && change.fullDocument._id) {
-                const entries = [change.fullDocument, ...this.state.stats];
+                console.log('CHANGE', this.getCardEntry(change.fullDocument));
+                const entries = [this.getCardEntry(change.fullDocument), ...this.state.stats];
                 this.setState({ stats: entries });
             }
         });
     }
 
+    getCardEntry = (stat) => {
+        const cardEntry = {
+            title: stat.player ?
+                `${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}` :
+                stat.team.name,
+            subtitle: stat.game.location,
+            statLabel: stat.stat.name,
+            entryDate: stat.createdAt,
+        }
+        return cardEntry;
+    }
+
     render() {
+        const { classes } = this.props;
         const { stats } = this.state;
-        const validStats =  stats.filter(s => s && s._id);
         return (
             <div>
                 <div style={{ marginBottom: 25 }}>Realtime ({this.state.timer.toLocaleTimeString()})</div>
-                {validStats.map(stat => (
-                    <Paper key={stat._id} style={{ marginBottom: 15, padding: 20 }}>
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent:'space-between' }}>
-                            {stat.player ? 
-                                <Typography variant="subtitle1">{`${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}`} - {stat.stat.name}</Typography> :
-                                <Typography variant="subtitle1">{stat.team.name} team - {stat.stat.name}</Typography>
-                            }
-                            <Typography variant="subtitle1">{(new Date(stat.createdAt)).toLocaleString()}</Typography>
-                        </div>
-                    </Paper>
+                {stats.map((stat, idx) => (
+                    <Card key={idx} className={classes.card}>
+                        <CardContent>
+                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                {stat.title}
+                            </Typography>
+                            <Typography variant="subtitle1">{(new Date(stat.entryDate)).toLocaleString()}</Typography>
+                            <Typography variant="h5" component="h2">
+                                {stat.subtitle}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            {/* <Button size="small">Learn More</Button> */}
+                        </CardActions>
+                    </Card>
                 ))}
             </div>
         )
@@ -50,4 +89,4 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RealtimePage);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RealtimePage));
