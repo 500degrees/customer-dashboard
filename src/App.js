@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import { Route, Switch } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import SecretRoute from './shared/components/SecretRoute';
 
+const styles = theme => ({
+  root: {
+    height: '100vh'
+  }
+});
+
 export class App extends Component {
   render() {
+    const { classes } = this.props;
     return (
-        <div style={{ height: '100vh' }}>
+        <div className={classes.root}>
           <Switch>
             <Route path='/login' render={(props) => <LoginPage {...props}></LoginPage>} />
             <SecretRoute path='/' component={MainPage} />
@@ -17,4 +25,4 @@ export class App extends Component {
   }
 }
 
-export default App;
+export default withStyles(styles)(App);
