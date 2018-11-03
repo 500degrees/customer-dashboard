@@ -37,3 +37,6 @@ export const FETCH_DASHBOARD_DATA_FAILED='FETCH_DASHBOARD_DATA_FAILED';
 export const onFetchDashboardData = (from, to) => ({ type: FETCH_DASHBOARD_DATA, from, to });
 export const onFetchDashboardDataSuccess = (data) => ({ type: FETCH_DASHBOARD_DATA_SUCCESS, data });
 export const onFetchDashboardDataFailed = (error) => ({ type: FETCH_DASHBOARD_DATA_FAILED, error });
+// REALTIME
+export const ADD_STAT='ADD_STAT';
+export const addStat = (stat) => ({ type: ADD_STAT, stat});

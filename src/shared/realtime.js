@@ -1,15 +1,13 @@
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 import { REALTIME_ENDPOINT } from './constants';
-const  socket = openSocket(`${REALTIME_ENDPOINT}`,);
 
-function subscribeToTimer(cb) {
-  socket.on('timer', timestamp => cb(null, timestamp));
-  socket.emit('subscribeToTimer', 1000);
-}
+const createSocketConnection = () => {
+  return new Promise(resolve => {
+    const socket = io(`${REALTIME_ENDPOINT}`);
+    socket.on('connect', () => {
+      resolve(socket);
+    });
+  })
+};
 
-function subscribeDatabaseChanges(cb) {
-    socket.on('db-change', change => cb(null, change));
-    socket.emit('listen-db-changes');
-  }
-
-export { subscribeToTimer, subscribeDatabaseChanges };
+export { createSocketConnection };
