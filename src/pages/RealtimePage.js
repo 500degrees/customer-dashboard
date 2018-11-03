@@ -4,26 +4,26 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import { connect } from 'react-redux';
-import { subscribeToTimer, subscribeDatabaseChanges } from '../shared/realtime';
+import { subscribeDatabaseChanges } from '../shared/realtime';
 import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
     card: {
-      minWidth: 275,
-      marginBottom: 7,
+        minWidth: 275,
+        marginBottom: 7,
     },
     bullet: {
-      display: 'inline-block',
-      margin: '0 2px',
-      transform: 'scale(0.8)',
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
     },
     title: {
-      fontSize: 14,
+        fontSize: 14,
     },
     pos: {
-      marginBottom: 12,
+        marginBottom: 12,
     },
-  });
+});
 
 export class RealtimePage extends React.Component {
 
@@ -34,11 +34,9 @@ export class RealtimePage extends React.Component {
 
     componentDidMount() {
         // this.props.startRealtime();
-        subscribeToTimer((err, timer) => this.setState({ timer: new Date(timer) }));
         subscribeDatabaseChanges((err, change) => {
-            // console.log('Received Stat', change);
             if (change && change.fullDocument && change.operationType === 'insert' && change.fullDocument._id) {
-                // console.log('CHANGE',change.fullDocument, this.getCardEntry(change.fullDocument));
+                console.log('CHANGE', change.fullDocument, this.getCardEntry(change.fullDocument));
                 const entries = [this.getCardEntry(change.fullDocument), ...this.state.stats];
                 this.setState({ stats: entries });
             }
@@ -63,9 +61,8 @@ export class RealtimePage extends React.Component {
         const { stats } = this.state;
         return (
             <div>
-                <div style={{ marginBottom: 25 }}>Realtime ({this.state.timer.toLocaleTimeString()})</div>
-                {stats.map((stat, idx) => (
-                    <Card key={idx} className={classes.card}>
+                {stats.map((stat, idx) => {
+                    return (<Card key={idx} className={classes.card}>
                         <CardContent>
                             <Typography className={classes.title} color="textSecondary" gutterBottom>
                                 {stat.title} - {stat.statLabel}
@@ -81,7 +78,8 @@ export class RealtimePage extends React.Component {
                             {/* <Button size="small">Learn More</Button> */}
                         </CardActions>
                     </Card>
-                ))}
+                    )
+                })}
             </div>
         )
     }
