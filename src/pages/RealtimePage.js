@@ -38,12 +38,12 @@ export class RealtimePage extends React.Component {
                             </Typography>
                             <Typography variant="subtitle1">{(new Date(stat.entryDate)).toLocaleString()}</Typography>
                             <Typography variant="subtitle1">{stat.coach}</Typography>
-                            <Typography variant="h5" component="h2">
-                                {stat.address || ''}
-                            </Typography>
+                            {stat.address !== 'empty address' ? <Typography variant="h5" component="h2">
+                                {stat.address}
+                            </Typography> : null}
                         </CardContent>
                         <CardActions>
-                            <a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${stat.address}`}>Google Maps</a>
+                            {stat.address !== 'empty address' ? <a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/place/${stat.address}`}>Google Maps</a> : null}
                             {/* <Button size="small">Learn More</Button> */}
                         </CardActions>
                     </Card>

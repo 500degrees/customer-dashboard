@@ -5,7 +5,6 @@ import {addStat} from '../actions';
 
 const createSocketChannel = socket => eventChannel(emit => {
     const statHandler = (event) => {
-        // console.log('EVENT', event);
         if (event && event.fullDocument && event.operationType === 'insert' && event.fullDocument._id) {
             emit(getStatEntry(event.fullDocument));
         }
@@ -22,7 +21,11 @@ const getStatEntry = (stat) => {
         title: stat.player ?
             `${stat.player.firstName}${stat.player.lastName ? ' ' + stat.player.lastName : ''}` :
             stat.team.name,
-        address: stat.game.address && stat.game.address.address ? stat.game.address.address : stat.game.address,
+        address: (stat.game.address && stat.game.address.address) ? 
+            (stat.game.address.address && stat.game.address.address.address) ? 
+                stat.game.address.address.address : 
+                stat.game.address.address :
+            (stat.game.address && stat.game.address.length > 0) ? stat.game.address: 'empty address',
         statLabel: stat.stat.name,
         entryDate: stat.createdAt,
         coach: stat.userId,
